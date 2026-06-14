@@ -1,3 +1,12 @@
+const INTENT_OPTIONS = [
+  { label: '自动判断', value: 'auto' },
+  { label: '创作类', value: 'creative' },
+  { label: '编程类', value: 'coding' },
+  { label: '分析类', value: 'analysis' },
+  { label: '问答类', value: 'qa' },
+  { label: '角色扮演', value: 'roleplay' },
+];
+
 const PROFESSIONALISM_OPTIONS = [
   { label: '入门', value: 'beginner' },
   { label: '进阶', value: 'intermediate' },
@@ -54,6 +63,7 @@ export default function ParamsPanel({ params, onChange, onOptimize, isStreaming 
     <>
       <div>
         <div className="panel-title">🎛️ 优化参数</div>
+        <RadioGroup label="意图分类" options={INTENT_OPTIONS} value={params.intent} onChange={update('intent')} />
         <RadioGroup label="专业度" options={PROFESSIONALISM_OPTIONS} value={params.professionalism} onChange={update('professionalism')} />
         <RadioGroup label="长度" options={LENGTH_OPTIONS} value={params.length} onChange={update('length')} />
         <RadioGroup label="格式" options={FORMAT_OPTIONS} value={params.format} onChange={update('format')} />

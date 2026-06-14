@@ -5,7 +5,7 @@ import { getDb } from '../db/index.js';
 export const optimizeRouter = Router();
 
 optimizeRouter.post('/optimize', async (req, res) => {
-  const { raw_prompt, professionalism, length, format } = req.body;
+  const { raw_prompt, intent, professionalism, length, format } = req.body;
 
   // 1. Validate raw_prompt
   if (!raw_prompt || !raw_prompt.trim()) {
@@ -23,6 +23,7 @@ optimizeRouter.post('/optimize', async (req, res) => {
     // 3. Call DeepSeek
     const result = await callDeepSeek(
       raw_prompt.trim(),
+      intent || 'auto',
       professionalism || 'intermediate',
       length || 'medium',
       format || 'paragraph'

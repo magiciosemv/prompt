@@ -10,6 +10,7 @@ export default function App() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [history, setHistory] = useState([]);
   const [params, setParams] = useState({
+    intent: 'auto',
     professionalism: 'intermediate',
     length: 'medium',
     format: 'paragraph',

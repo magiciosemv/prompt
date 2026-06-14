@@ -89,6 +89,15 @@ optimized_prompt 字段必须按以下模板输出，每个分区用 Markdown �
   "confidence": "high|medium|low"
 }`;
 
+const INTENT_LABELS = {
+  auto: '自动判断',
+  creative: '创作类',
+  coding: '编程类',
+  analysis: '分析类',
+  qa: '问答类',
+  roleplay: '角色扮演',
+};
+
 const DIMENSION_LABELS = {
   beginner: '入门',
   intermediate: '进阶',
@@ -107,13 +116,14 @@ const FORMAT_LABELS = {
   code: '代码',
 };
 
-function buildUserMessage(raw_prompt, professionalism, length, format) {
+function buildUserMessage(raw_prompt, intent, professionalism, length, format) {
+  const intentLabel = INTENT_LABELS[intent] || '自动判断';
   const level = DIMENSION_LABELS[professionalism] || '进阶';
   const len = LENGTH_LABELS[length] || '中等';
   const fmt = FORMAT_LABELS[format] || '段落';
 
   return `原始提示词：${raw_prompt}
-参数：${level} / ${len} / ${fmt}
+参数：意图=${intentLabel} / ${level} / ${len} / ${fmt}
 按系统提示的 JSON 格式输出优化结果。`;
 }
 
@@ -143,7 +153,7 @@ function parseResponse(content) {
   };
 }
 
-export async function callDeepSeek(raw_prompt, professionalism, length, format) {
+export async function callDeepSeek(raw_prompt, intent, professionalism, length, format) {
   const apiKey = process.env.DEEPSEEK_API_KEY;
   const baseUrl = process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com';
 
@@ -157,7 +167,7 @@ export async function callDeepSeek(raw_prompt, professionalism, length, format) 
     model: 'deepseek-v4-flash',
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: buildUserMessage(raw_prompt, professionalism, length, format) },
+      { role: 'user', content: buildUserMessage(raw_prompt, intent, professionalism, length, format) },
     ],
     temperature: 0.7,
     max_tokens: 4096,
