@@ -34,3 +34,23 @@ body {
   align-items: center;
   gap: 6px;
 }
+
+.input-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.output-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.params-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.history-panel {
+  overflow-y: auto;
+}
