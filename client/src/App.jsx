@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import InputPanel from './components/InputPanel';
 import OutputPanel from './components/OutputPanel';
 import ParamsPanel from './components/ParamsPanel';
 import HistoryPanel from './components/HistoryPanel';
+import LoginPanel from './components/LoginPanel';
 
 export default function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
   const [rawPrompt, setRawPrompt] = useState('');
   const [optimizedResult, setOptimizedResult] = useState(null);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -15,6 +17,21 @@ export default function App() {
     length: 'medium',
     format: 'paragraph',
   });
+
+  useEffect(() => {
+    const saved = localStorage.getItem('auth_logged_in');
+    if (saved === 'true') {
+      setLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
+
+  if (!loggedIn) {
+    return <LoginPanel onLogin={handleLogin} />;
+  }
 
   const handleOptimize = async () => {
     if (!rawPrompt.trim() || isStreaming) return;

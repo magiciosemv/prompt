@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { optimizeRouter } from './routes/optimize.js';
 import { historyRouter } from './routes/history.js';
+import { authRouter } from './routes/auth.js';
 import { initDb } from './db/index.js';
 import { existsSync } from 'fs';
 import { fileURLToPath } from 'url';
@@ -16,6 +17,7 @@ app.use(express.json());
 
 initDb();
 
+app.use('/api', authRouter);
 app.use('/api', optimizeRouter);
 app.use('/api', historyRouter);
 
